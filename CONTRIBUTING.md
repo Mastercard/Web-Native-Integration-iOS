@@ -32,6 +32,3 @@ As part of this build, the following metrics are captured:
 * Analysis of lint warnings
 
 Please ensure you are resolving all lint warning prior to opening a PR.
-
-
- 

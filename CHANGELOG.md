@@ -6,4 +6,5 @@ Released: February 03, 2022
 
 Changes:
 
-* Initial public release
+* Sample App demonstrating integration of Mastercard Javascript SDK with native application.
+
