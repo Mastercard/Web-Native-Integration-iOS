@@ -112,20 +112,17 @@ function validate(platform, reqString) {
   console.log('inside validate:')
   console.log('Validate request: '+reqString)
   let request = JSON.parse(reqString);
-  let promise = new Promise(
-    function(resolve, reject) {
-      click2payInstance.validate(request).then(resolve)
-    }
-  );
-  promise.then(
-    value => {
-      sendMessageToNative(platform, value, "validate");
-    },
-    error => {
-      sendMessageToNative(platform, error, "validate");
-      console.log('Validate API rejected '+ error)
-    }
-  );
+  click2payInstance.validate(request).then(
+        value => {
+            var formattedResponses = JSON.stringify(value, null, 2);
+            console.groupCollapsed('Validate API response:')
+            console.log(formattedResponses)
+            console.groupEnd();
+            sendMessageToNative(platform, value, "validate");
+        }).catch(error =>{
+            sendMessageToNative(platform, error , "errorValidate");
+            console.log('Validate API rejected'+ error)
+        });
 }
 
 function checkoutWithNewCard(platform, reqString, isDCFActionSheet) {
