@@ -120,7 +120,7 @@ function validate(platform, reqString) {
             console.groupEnd();
             sendMessageToNative(platform, value, "validate");
         }).catch(error =>{
-            sendMessageToNative(platform, error , "errorValidate");
+            sendMessageToNative(platform, error , "validate");
             console.log('Validate API rejected'+ error)
         });
 }
