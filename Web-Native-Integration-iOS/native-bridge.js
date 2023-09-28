@@ -130,31 +130,24 @@ function checkoutWithNewCard(platform, reqString, isDCFActionSheet) {
       iframe.classList.add('loaded')
    }
   iframe.addEventListener('load', addClass)
-  let promise = new Promise(
-    function(resolve, reject) {
-      click2payInstance.checkoutWithNewCard(checkoutRequest).then(resolve)
-    }
-  );
-  promise.then(
-    value => {
-      console.log("before dcf launch frame");
-      iframe.removeEventListener('load',addClass)
-      iframe.classList.remove('loaded')
-      if (isDCFActionSheet == true)
-              var frame = document.getElementById("dcfLaunch");
-      else
-              var frame = document.getElementById("dcfWeb");
-      //var frame = document.getElementById("dcfLaunch");
-      console.log("after dcf launch frame and before blank");
-      frame.src = "about:blank"
-      console.log("after blank");
-      sendMessageToNative(platform, value, "checkoutWithNewCard");
-    },
-    error => {
-      sendMessageToNative(platform, error, "checkoutWithNewCard");
-      console.log('Checkout API rejected '+ error)
-    }
-  );
+  click2payInstance.checkoutWithNewCard(checkoutRequest).then(
+      value => {
+          console.log("before dcf launch frame");
+          iframe.removeEventListener('load',addClass)
+          iframe.classList.remove('loaded')
+          if (isDCFActionSheet == true)
+                  var frame = document.getElementById("dcfLaunch");
+          else
+                  var frame = document.getElementById("dcfWeb");
+          //var frame = document.getElementById("dcfLaunch");
+          console.log("after dcf launch frame and before blank");
+          frame.src = "about:blank"
+          console.log("after blank");
+          sendMessageToNative(platform, value, "checkoutWithNewCard");
+      }).catch(error =>{
+          sendMessageToNative(platform, error, "checkoutWithNewCard");
+          console.log('Checkout API rejected '+ error)
+      });
 }
 
 function checkoutWithCard(platform, reqString, isDCFActionSheet) {
