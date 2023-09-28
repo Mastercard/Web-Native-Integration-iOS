@@ -53,79 +53,67 @@ function getCards(platform) {
 }
 
 function encryptCard(platform, reqString) {
-  console.log('inside encryptCard:')
-  let cardData = JSON.parse(reqString);
-  let promise = new Promise(
-    function(resolve, reject) {
-      click2payInstance.encryptCard(cardData).then(resolve)
-    }
-  );
-  promise.then(
-    value => {
-      sendMessageToNative(platform, value, "encryptCard");
-    },
-    error => {
-      sendMessageToNative(platform, error, "encryptCard");
-      console.log('EncryptCard API rejected '+ error)
-    }
-  );
+    console.log('inside encryptCard:')
+    let cardData = JSON.parse(reqString);
+    click2payInstance.encryptCard(cardData).then(
+        value => {
+            var formattedResponses = JSON.stringify(value, null, 2);
+            console.groupCollapsed('EncryptCard API response:')
+            console.log(formattedResponses)
+            console.groupEnd();
+            sendMessageToNative(platform, value, "encryptCard");
+            }).catch(error =>{
+                     sendMessageToNative(platform, error, "encryptCard");
+                     console.log('EncryptCard API rejected '+ error)
+                     });
 }
 
 function idLookup(platform, reqString) {
   console.log('inside idLookup:')
-  let request = JSON.parse(reqString);
-  let promise = new Promise(
-    function(resolve, reject) {
-      click2payInstance.idLookup(request).then(resolve)
-    }
-  );
-  promise.then(
-    value => {
-      sendMessageToNative(platform, value, "idLookup");
-    },
-    error => {
-      sendMessageToNative(platform, error, "idLookup");
-      console.log('IdLookup API rejected '+ error)
-    }
-  );
+    let request = JSON.parse(reqString);
+    click2payInstance.idLookup(request).then(
+            value => {
+                var formattedResponses = JSON.stringify(value, null, 2);
+                console.groupCollapsed('IdLookup API response:')
+                console.log(formattedResponses)
+                console.groupEnd();
+                sendMessageToNative(platform, value, "idLookup");
+            }).catch(error =>{
+            sendMessageToNative(platform, error, "idLookup");
+            console.log('IdLookup API rejected '+ error)
+            });
 }
 
 function initiateValidation(platform) {
   console.log('inside initiateValidation:')
-  let promise = new Promise(
-    function(resolve, reject) {
-      click2payInstance.initiateValidation().then(resolve)
-    }
-  );
-  promise.then(
-    value => {
-      sendMessageToNative(platform, value, "initiateValidation");
-    },
-    error => {
-      sendMessageToNative(platform, error, "initiateValidation");
-      console.log('InitiateValidation API rejected '+ error)
-    }
-  );
+  click2payInstance.initiateValidation().then(
+            value => {
+                var formattedResponses = JSON.stringify(value, null, 2);
+                console.groupCollapsed('InitiateValidation API response:')
+                console.log(formattedResponses)
+                console.groupEnd();
+                sendMessageToNative(platform, value, "initiateValidation");
+            }).catch(error =>{
+            sendMessageToNative(platform, error, "initiateValidation");
+            console.log('InitiateValidation API rejected '+ error)
+            });
 }
 
 function validate(platform, reqString) {
   console.log('inside validate:')
   console.log('Validate request: '+reqString)
   let request = JSON.parse(reqString);
-  let promise = new Promise(
-    function(resolve, reject) {
-      click2payInstance.validate(request).then(resolve)
-    }
-  );
-  promise.then(
-    value => {
-      sendMessageToNative(platform, value, "validate");
-    },
-    error => {
-      sendMessageToNative(platform, error, "validate");
-      console.log('Validate API rejected '+ error)
-    }
-  );
+  click2payInstance.validate(request).then(
+        value => {
+            var formattedResponses = JSON.stringify(value, null, 2);
+            console.groupCollapsed('Validate API response:')
+            console.log(formattedResponses)
+            console.groupEnd();
+            sendMessageToNative(platform, value, "validate");
+        }).catch(error =>{
+            sendMessageToNative(platform, error , "validate");
+            console.log('Validate API rejected'+ error)
+        });
 }
 
 function checkoutWithNewCard(platform, reqString, isDCFActionSheet) {
@@ -142,31 +130,24 @@ function checkoutWithNewCard(platform, reqString, isDCFActionSheet) {
       iframe.classList.add('loaded')
    }
   iframe.addEventListener('load', addClass)
-  let promise = new Promise(
-    function(resolve, reject) {
-      click2payInstance.checkoutWithNewCard(checkoutRequest).then(resolve)
-    }
-  );
-  promise.then(
-    value => {
-      console.log("before dcf launch frame");
-      iframe.removeEventListener('load',addClass)
-      iframe.classList.remove('loaded')
-      if (isDCFActionSheet == true)
-              var frame = document.getElementById("dcfLaunch");
-      else
-              var frame = document.getElementById("dcfWeb");
-      //var frame = document.getElementById("dcfLaunch");
-      console.log("after dcf launch frame and before blank");
-      frame.src = "about:blank"
-      console.log("after blank");
-      sendMessageToNative(platform, value, "checkoutWithNewCard");
-    },
-    error => {
-      sendMessageToNative(platform, error, "checkoutWithNewCard");
-      console.log('Checkout API rejected '+ error)
-    }
-  );
+  click2payInstance.checkoutWithNewCard(checkoutRequest).then(
+      value => {
+          console.log("before dcf launch frame");
+          iframe.removeEventListener('load',addClass)
+          iframe.classList.remove('loaded')
+          if (isDCFActionSheet == true)
+                  var frame = document.getElementById("dcfLaunch");
+          else
+                  var frame = document.getElementById("dcfWeb");
+          //var frame = document.getElementById("dcfLaunch");
+          console.log("after dcf launch frame and before blank");
+          frame.src = "about:blank"
+          console.log("after blank");
+          sendMessageToNative(platform, value, "checkoutWithNewCard");
+      }).catch(error =>{
+          sendMessageToNative(platform, error, "checkoutWithNewCard");
+          console.log('Checkout API rejected '+ error)
+      });
 }
 
 function checkoutWithCard(platform, reqString, isDCFActionSheet) {
